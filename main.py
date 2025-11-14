@@ -21,17 +21,21 @@ app.secret_key = secrets.token_hex()
 @app.route('/')
 # login to user profile
 def login():
-    print('login')
+    # Sends Ouath object to spotify for login
     login_url = get_oauth().get_authorize_url()
     return redirect(login_url)
 
 @app.route('/callback')
 def callback_page():
-    print('Callback')
     session.clear()
+    # Get result from login
     code = request.args.get('code')
     state = request.args.get('state')
-    token_info = access_token(code, state)
+    # Creates access token
+    token = access_token(code, state)
+    # Store token in session cookie
+    session['token_info'] = token
+    # Moves onto main page
     return redirect(url_for('view'))
 
 @app.route('/view')
@@ -55,7 +59,7 @@ def access_token(code, state):
     }
     data = {
         "code" : code,
-        "grant_type": "client_credentials"
+        "grant_type": "authorization_code"
         }
 
     res = post(url, headers=header, data=data)
@@ -64,11 +68,14 @@ def access_token(code, state):
 
     return token
 
+def refresh_token():
+    pass
+
 # Creates Auth header for spotify api token
 def get_auth_header(token):
     return {"Authorization": "Bearer " + token}
 
-# Creates access token for the user's data
+# Creates Oauth object for access to user's account
 def get_oauth():
     return SpotifyOAuth(
         client_id = client_id,
