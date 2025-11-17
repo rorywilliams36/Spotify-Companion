@@ -1,22 +1,25 @@
 from dotenv import load_dotenv
 from requests import post, get
 import os
+import time
 import base64
 import json
 import secrets
-from flask import Flask, url_for, session, redirect, request
+from flask import Flask, url_for, session, redirect, request, render_template
 
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
+# Load client id and secret from env file
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 REDIRECT_URL = "http://127.0.0.1:5000/callback"
 
+# Init app
 app = Flask(__name__)
 app.config["SESSION_COOKIE_NAME"] = "Spotify Cookie"
-app.secret_key = secrets.token_hex()
+app.secret_key = secrets.token_hex() 
 
 @app.route('/')
 # login to user profile
@@ -36,21 +39,23 @@ def callback_page():
     # Store token in session cookie
     session['token_info'] = token
     # Moves onto main page
-    return redirect(url_for('view'))
+    return redirect(url_for('view', _external=True))
 
 @app.route('/view')
 def view():
-    print('Oauth Success')
-    exit
+    return render_template('profile.html', displayName=profile["displayName"])
+    if session['token_info']:
+        profile = get_profile()
+        return render_template('profile.html', displayName=profile["displayName"])
 
 def access_token(code, state):
-    if state == None or code == None:
+    # Checks if successful login retruned correct results
+    if code == None:
         return redirect('/')
 
-    auth_str = client_id + ":" + client_secret
-    auth_bytes = auth_str.encode("utf-8")
-    auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
+    auth_base64 = encode_client_creds()
 
+    # Format for request to get access token
     url = "https://accounts.spotify.com/api/token"
 
     header = {
@@ -59,17 +64,21 @@ def access_token(code, state):
     }
     data = {
         "code" : code,
-        "grant_type": "authorization_code"
+        "grant_type": "authorization_code",
+        "redirect_uri" : url_for('callback_page', _external=True), 
         }
 
     res = post(url, headers=header, data=data)
     json_result = json.loads(res.content)
     token = json_result["access_token"]
-
     return token
 
-def refresh_token():
-    pass
+# Creates utf-8 encoding of client credentials
+def encode_client_creds():
+    auth_str = client_id + ":" + client_secret
+    auth_bytes = auth_str.encode("utf-8")
+    auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
+    return auth_base64
 
 # Creates Auth header for spotify api token
 def get_auth_header(token):
@@ -83,5 +92,13 @@ def get_oauth():
         redirect_uri = url_for('callback_page', _external=True), 
         scope = 'user-library-read playlist-modify-public playlist-modify-private'
     )
+
+def get_profile():
+    url = "https://api.spotify.com/v1/me"
+    auth_header = get_auth_header(session["token_info"])
+    res = get(url, headers=auth_header)
+    json_result = json.loads(res.content)
+    return json_result
+
 
 app.run()
