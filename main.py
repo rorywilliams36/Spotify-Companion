@@ -1,3 +1,5 @@
+from endpoints import *
+
 from dotenv import load_dotenv
 from requests import post, get
 import os
@@ -121,17 +123,9 @@ def get_oauth():
         client_id = client_id,
         client_secret = client_secret,
         redirect_uri = url_for('callback_page', _external=True), 
-        scope = 'user-library-read playlist-modify-public playlist-modify-private'
+        scope = 'user-library-read playlist-modify-public playlist-modify-private user-top-read'
     )
 
-def get_profile():
-    url = "https://api.spotify.com/v1/me"
-    token = get_access_token()
-    auth_header = get_auth_header(token)
-    res = get(url, headers=auth_header)
-    json_result = json.loads(res.content)
-    print(json_result)
-    return json_result
 
-
-app.run()
+if __name__ == "__main__":
+    app.run()
