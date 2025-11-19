@@ -47,6 +47,8 @@ def callback_page():
 def view():
     if session['token_info']:
         profile = get_profile()
+        tracks = get_top_item()
+        print(tracks)
         return render_template('profile.html', displayName=profile["display_name"])
 
 def access_token(code, state):
@@ -123,8 +125,9 @@ def get_oauth():
         client_id = client_id,
         client_secret = client_secret,
         redirect_uri = url_for('callback_page', _external=True), 
-        scope = 'user-library-read playlist-modify-public playlist-modify-private user-top-read'
+        scope = 'playlist-modify-public playlist-modify-private user-top-read user-read-recently-played user-library-read user-read-email user-read-private'
     )
+
 
 
 if __name__ == "__main__":
