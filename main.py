@@ -43,10 +43,9 @@ def callback_page():
 
 @app.route('/view')
 def view():
-    return render_template('profile.html', displayName=profile["displayName"])
     if session['token_info']:
         profile = get_profile()
-        return render_template('profile.html', displayName=profile["displayName"])
+        return render_template('profile.html', displayName=profile["display_name"])
 
 def access_token(code, state):
     # Checks if successful login retruned correct results
@@ -69,8 +68,40 @@ def access_token(code, state):
         }
 
     res = post(url, headers=header, data=data)
+    token = json.loads(res.content)
+    return token
+
+# Refreshes token after time expiry
+def refresh_token():
+    token = session['token_info']
+
+    auth_base64 = encode_client_creds()
+
+    url = 'https://accounts.spotify.com/api/token' 
+    headers = {
+        'content-type' : 'application/x-www-form-urlencoded', 
+        'Authorization' : 'Basic' + auth_base64
+    }
+    data = {
+        'grant-type' : 'refresh_token',
+        'refresh-token' : token
+    }
+    
+    res = post(url, headers=header, data=data)
     json_result = json.loads(res.content)
     token = json_result["access_token"]
+    session['token_info'] = token
+    return json_result
+
+# Acquires the access token from the session and calls refresh in case of expiry
+def get_access_token():
+    if not session['token_info']:
+        return redirect('/')
+    token_json = session["token_info"]
+    token = token_json['access_token']
+    expiry = token_json['expires_in']
+    if expiry < 120:
+        token = refresh_token()
     return token
 
 # Creates utf-8 encoding of client credentials
@@ -95,9 +126,11 @@ def get_oauth():
 
 def get_profile():
     url = "https://api.spotify.com/v1/me"
-    auth_header = get_auth_header(session["token_info"])
+    token = get_access_token()
+    auth_header = get_auth_header(token)
     res = get(url, headers=auth_header)
     json_result = json.loads(res.content)
+    print(json_result)
     return json_result
 
 
