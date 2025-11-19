@@ -47,9 +47,13 @@ def callback_page():
 def view():
     if session['token_info']:
         profile = get_profile()
-        tracks = get_top_item()
-        print(tracks)
+        tracks = get_top_item(item_type='tracks', limit=2)
+        artists = get_top_item(item_type='artists', limit=2)
         return render_template('profile.html', displayName=profile["display_name"])
+
+@app.route('/error')
+def error():
+    pass
 
 def access_token(code, state):
     # Checks if successful login retruned correct results
