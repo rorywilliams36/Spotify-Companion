@@ -35,3 +35,13 @@ def get_current_playlists(limit: int = 2, offset: int = 0):
         json_result = json.loads(res.content)
         return json_result
     return None
+
+def get_saved_tracks(limit: int = 2, offset: int = 0):
+    url = f'https://api.spotify.com/v1/me/tracks?limit={limit}&offset={offset}'
+    token = get_access_token()
+    auth_header = get_auth_header(token)
+    res = get(url, headers=auth_header)
+    if res.status_code == 200:
+        json_result = json.loads(res.content)
+        return json_result['items']
+    return None
