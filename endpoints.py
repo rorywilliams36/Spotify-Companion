@@ -15,7 +15,20 @@ def get_profile():
     json_result = json.loads(res.content)
     return json_result
 
+
 def get_top_item(item_type: str = 'tracks', limit: int = 2, time_range: str = 'medium_term', offset: int = 0):
+    '''
+    Returns the top tracks or artists the user listens to
+
+    Params:
+        item_type: string, either 'tracks' or 'artists'
+        limit: integer of the number items to be returned
+        time_range: string displaying how far bakc to grab data from ('short_term', 'medium_term', 'long_term')
+        offset: int
+
+    Returns:
+        JSON payload of the top items recieved from the endpoint
+    '''
     url = f'https://api.spotify.com/v1/me/top/{item_type}?limit={limit}&time_range={time_range}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
@@ -27,6 +40,16 @@ def get_top_item(item_type: str = 'tracks', limit: int = 2, time_range: str = 'm
 
 
 def get_current_playlists(limit: int = 2, offset: int = 0):
+    '''
+    Returns the current users' saved playlists
+
+    Params:
+        limit: integer of the number items to be returned
+        offset: int
+
+    Returns:
+        JSON payload of the playlists recieved from the endpoint
+    '''
     url = f'https://api.spotify.com/v1/me/playlists?limit={limit}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
@@ -36,7 +59,17 @@ def get_current_playlists(limit: int = 2, offset: int = 0):
         return json_result
     return None
 
-def get_saved_tracks(limit: int = 2, offset: int = 0):
+def get_saved_tracks(limit: int = 2, offset: int = 0):    
+    '''
+    Returns the current users' saved/liked songs
+
+    Params:
+        limit: integer of the number items to be returned
+        offset: int
+
+    Returns:
+        JSON payload of the saved/liked songs recieved from the endpoint
+    '''
     url = f'https://api.spotify.com/v1/me/tracks?limit={limit}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
