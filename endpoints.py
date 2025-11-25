@@ -35,7 +35,7 @@ def get_top_item(item_type: str = 'tracks', limit: int = 2, time_range: str = 'm
     res = get(url, headers=auth_header)
     if res.status_code == 200:
         json_result = json.loads(res.content)
-        return res.status_code, json_result
+        return res.status_code, json_result['items']
     return res.status_code, None
 
 
@@ -78,3 +78,22 @@ def get_saved_tracks(limit: int = 2, offset: int = 0):
         json_result = json.loads(res.content)
         return res.status_code, json_result['items']
     return res.status_code, None
+
+# Returns the top tracks in a dictionary to display easier
+def extract_top_tracks(tracks):
+    tracks_dict = {"artists" : [], "tracks" : []}
+
+    for track in tracks:
+        tracks_dict["artists"].append(track['artists'][0]['name'])
+        tracks_dict["tracks"].append(track['name'])
+
+    return tracks_dict
+
+# Returns the top artists in an array
+def extract_top_artists(artists):
+    artists_arr = []
+    
+    for artist in artists:
+        artists_arr.append(artist['name'])
+
+    return artists_arr
