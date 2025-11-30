@@ -47,11 +47,11 @@ def callback_page():
 def view():
     if session['token_info']:
         profile = get_profile()
-        status, tracks = get_top_item(item_type='tracks', limit=2)
-        status, artists = get_top_item(item_type='artists', limit=2)
+        status, tracks = get_top_item(item_type='tracks', limit=1)
+        status, artists = get_top_item(item_type='artists', limit=5)
         status, playlists = get_current_playlists()
         status, saved_tracks = get_saved_tracks()
-        return render_template('profile.html', displayName=profile["display_name"])
+        return render_template('profile.html', displayName=profile["display_name"], artists=artists)
 
 @app.route('/error')
 def error():

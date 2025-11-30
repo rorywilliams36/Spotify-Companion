@@ -1,4 +1,13 @@
-<title>Hello from Flask</title>
+<title>Your Profile</title>
 {% if displayName %}
   <h1>Hello {{ displayName }}!</h1>
 {% endif %}
+
+<h3>Your Top Artists:</h3>
+<ol>
+  {% if artists %}
+    {% for artist in artists: %}
+      <li>{{artist['name']}}</li>
+    {% endfor %}
+  {% endif %}
+</ol>
