@@ -29,6 +29,7 @@ def get_top_item(item_type: str = 'tracks', limit: int = 2, time_range: str = 'm
     Returns:
         JSON payload (dict) of the top items recieved from the endpoint
     '''
+    limit = min(limit, 50)
     url = f'https://api.spotify.com/v1/me/top/{item_type}?limit={limit}&time_range={time_range}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
@@ -50,6 +51,7 @@ def get_current_playlists(limit: int = 2, offset: int = 0):
     Returns:
         JSON payload (dict) of the playlists recieved from the endpoint
     '''
+    limit = min(limit, 50)
     url = f'https://api.spotify.com/v1/me/playlists?limit={limit}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
@@ -70,6 +72,7 @@ def get_saved_tracks(limit: int = 2, offset: int = 0):
     Returns:
         JSON payload (dict) of the saved/liked songs recieved from the endpoint
     '''
+    limit = min(limit, 50)
     url = f'https://api.spotify.com/v1/me/tracks?limit={limit}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
@@ -78,6 +81,12 @@ def get_saved_tracks(limit: int = 2, offset: int = 0):
         json_result = json.loads(res.content)
         return res.status_code, json_result['items']
     return res.status_code, None
+
+
+
+
+
+
 
 # Returns the top tracks in a dictionary to display easier
 def extract_top_tracks(tracks):
@@ -97,3 +106,17 @@ def extract_top_artists(artists):
         artists_arr.append(artist['name'])
 
     return artists_arr
+
+def extract_genres(artists):
+    genre_count = {}
+
+    for artist in artists:
+        genres = artist['genres']
+        for genre in genres:
+            if genre not in genre_count:
+                genre_count[genre] = 1
+            else:
+                genre_count[genre] += 1
+
+    return genre_count
+
