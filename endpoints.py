@@ -107,6 +107,7 @@ def extract_top_artists(artists):
 
     return artists_arr
 
+# Returns dictionary containing counts for genres
 def extract_genres(artists):
     genre_count = {}
 
@@ -118,5 +119,5 @@ def extract_genres(artists):
             else:
                 genre_count[genre] += 1
 
-    return genre_count
+    return dict(sorted(genre_count.items(), reverse=True, key=lambda item: item[1]))
 
