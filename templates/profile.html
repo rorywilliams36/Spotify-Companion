@@ -11,3 +11,12 @@
     {% endfor %}
   {% endif %}
 </ol>
+
+<h3>Your Top Tracks:</h3>
+<ol>
+  {% if tracks %}
+    {% for track in tracks: %}
+      <li>{{track['name']}} - {{track['artists'][0]['name']}}</li>
+    {% endfor %}
+  {% endif %}
+</ol>
