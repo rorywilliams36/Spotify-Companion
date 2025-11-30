@@ -49,9 +49,10 @@ def view():
         profile = get_profile()
         status, tracks = get_top_item(item_type='tracks', limit=10)
         status, artists = get_top_item(item_type='artists', limit=10)
-        status, playlists = get_current_playlists()
+        status, playlists = get_current_playlists(limit=20)
         status, saved_tracks = get_saved_tracks()
-        return render_template('profile.html', displayName=profile["display_name"], artists=artists, tracks=tracks)
+        print(playlists)
+        return render_template('profile.html', profile=profile, artists=artists, tracks=tracks)
 
 @app.route('/error')
 def error():

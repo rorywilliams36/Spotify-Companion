@@ -1,6 +1,6 @@
 <title>Your Profile</title>
-{% if displayName %}
-  <h1>Hello {{ displayName }}!</h1>
+{% if profile %}
+  <h1>{{ profile['display_name'] }}!</h1>
 {% endif %}
 
 <h3>Your Top Artists:</h3>
