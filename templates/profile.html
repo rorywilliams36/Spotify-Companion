@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <meta charset="utf-8">  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">    <meta charset="utf-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Your Profile</title>
   </head>
@@ -17,32 +16,35 @@
   </header>
 
   <body>
-    <!-- Artists -->
     <div class="container">
-      <h3>Your Top Artists:</h3>
-      <ol>
-        {% if artists %}
-          {% for artist in artists: %}
-            <img src="{{artist['images'][0]['url']}}" id="artist" height="100" width="100">
-            <li>{{artist['name']}}</li>
-          {% endfor %}
-        {% endif %}
-      </ol>
-    </div>
+      <div class="row justify-content-start">
+        <!-- Artists -->
+        <div class="col">
+          <h3>Your Top Artists:</h3>
+          <ol>
+            {% if artists %}
+              {% for artist in artists: %}
+                <img src="{{artist['images'][0]['url']}}" id="artist" height="100" width="100">
+                <li>{{artist['name']}}</li>
+              {% endfor %}
+            {% endif %}
+          </ol>
+        </div>
 
-    <!-- Tracks -->
-    <div class="container">
-      <h3>Your Top Tracks:</h3>
-      <ol>
-        {% if tracks %}
-          {% for track in tracks: %}
-            <img src="{{track['album']['images'][0]['url']}}" id="artist" height="100" width="100">
-            <li>{{track['name']}} - {{track['artists'][0]['name']}}</li>
-          {% endfor %}
-        {% endif %}
-      </ol>
+        <!-- Tracks -->
+        <div class="col">
+          <h3>Your Top Tracks:</h3>
+          <ol>
+            {% if tracks %}
+              {% for track in tracks: %}
+                <img src="{{track['album']['images'][0]['url']}}" id="artist" height="100" width="100">
+                <li>{{track['name']}} - {{track['artists'][0]['name']}}</li>
+              {% endfor %}
+            {% endif %}
+          </ol>
+        </div>
+      </div>
     </div>
-
     <!-- Genres -->
   </body>
 
