@@ -1,22 +1,43 @@
-<title>Your Profile</title>
-{% if profile %}
-  <h1>{{ profile['display_name'] }}!</h1>
-{% endif %}
+<!DOCTYPE html>
+<html>
+  <header>
+    <!-- Profile Header -->
+    <title>Your Profile</title>
+    {% if profile %}
+      <h1>{{ profile['display_name'] }}!</h1>
+      <p>Followers: {{ profile['followers']['total'] }}</p>
+    {% endif %}
+  </header>
 
-<h3>Your Top Artists:</h3>
-<ol>
-  {% if artists %}
-    {% for artist in artists: %}
-      <li>{{artist['name']}}</li>
-    {% endfor %}
-  {% endif %}
-</ol>
+  <body>
+    <!-- Artists -->
+    <div>
+      <h3>Your Top Artists:</h3>
+      <ol>
+        {% if artists %}
+          {% for artist in artists: %}
+            <li>{{artist['name']}}</li>
+          {% endfor %}
+        {% endif %}
+      </ol>
+    </div>
 
-<h3>Your Top Tracks:</h3>
-<ol>
-  {% if tracks %}
-    {% for track in tracks: %}
-      <li>{{track['name']}} - {{track['artists'][0]['name']}}</li>
-    {% endfor %}
-  {% endif %}
-</ol>
+    <!-- Tracks -->
+    <div>
+      <h3>Your Top Tracks:</h3>
+      <ol>
+        {% if tracks %}
+          {% for track in tracks: %}
+            <li>{{track['name']}} - {{track['artists'][0]['name']}}</li>
+          {% endfor %}
+        {% endif %}
+      </ol>
+    </div>
+
+    <!-- Genres -->
+  </body>
+
+  <footer>
+    <p></p>
+  </footer>
+</html>
