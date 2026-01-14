@@ -1,0 +1,44 @@
+* {
+    font: arial;
+    color: aliceblue;
+}
+
+
+#profile {
+    background-color: #141616;
+    display: flex;      
+
+}
+
+/* #profile img {
+    max-width: ;
+    max-height: ;
+} */
+
+#artist {
+    color:lightgray;
+    margin-top: 0%;
+}
+
+#track {
+    margin-bottom: 0;
+}
+
+img {
+    border-radius: 50%;
+}
+
+body {
+    background-color: rgb(17, 17, 17);
+    justify-content: center;
+    align-items: center;
+}
+
+body > h3 {
+    font-style: bold;
+}
+
+footer {
+    background-color: #17191a;
+    color:lightgray
+}

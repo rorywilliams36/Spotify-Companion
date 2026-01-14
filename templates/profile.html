@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">    <meta charset="utf-8">  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">    <meta charset="utf-8"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Your Profile</title>
   </head>
 
-  <header>
+  <header id="profile">
     <!-- Profile Header -->
     {% if profile %}
       <h1>{{ profile['display_name'] }}</h1>
@@ -24,8 +25,8 @@
           <ol>
             {% if artists %}
               {% for artist in artists: %}
-                <img src="{{artist['images'][0]['url']}}" id="artist" height="100" width="100">
                 <li>{{artist['name']}}</li>
+                <img src="{{artist['images'][0]['url']}}" id="artist" height="100" width="100">
               {% endfor %}
             {% endif %}
           </ol>
@@ -38,7 +39,10 @@
             {% if tracks %}
               {% for track in tracks: %}
                 <img src="{{track['album']['images'][0]['url']}}" id="artist" height="100" width="100">
-                <li>{{track['name']}} - {{track['artists'][0]['name']}}</li>
+                <li>
+                  <p id="track">{{track['name']}}</p>
+                  <p id="artist">{{track['artists'][0]['name']}}</p>
+                </li>
               {% endfor %}
             {% endif %}
           </ol>
