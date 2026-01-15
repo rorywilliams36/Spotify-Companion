@@ -6,14 +6,27 @@
 
 #profile {
     background-color: #141616;
-    display: flex;      
-
+    display: flex;   
+    flex-direction: row;
+    align-items: center;  
+    padding: 1em 1em;
+    white-space: pre-wrap;
 }
 
-/* #profile img {
-    max-width: ;
-    max-height: ;
-} */
+#profile > div {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 0;
+    line-height: 2px;
+}
+
+#profile img {
+    max-width: auto;
+    max-height: auto;
+}
+
+
+
 
 #artist {
     color:lightgray;
@@ -41,4 +54,19 @@ body > h3 {
 footer {
     background-color: #17191a;
     color:lightgray
+}
+
+
+@media only screen and (max-width: 750px){
+    #profile img {
+        max-width: 210px;
+        max-height: 210px;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    #profile img {
+        max-width: 140px;
+        max-height: 140px;
+    }
 }
