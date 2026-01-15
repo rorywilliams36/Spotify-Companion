@@ -26,11 +26,14 @@
 }
 
 
-
-
 #artist {
     color:lightgray;
     margin-top: 0%;
+}
+
+#artist_img {
+    height: 120px;
+    width: 120px;
 }
 
 #track {
@@ -62,11 +65,21 @@ footer {
         max-width: 210px;
         max-height: 210px;
     }
+
+    #artist_img {
+        height: 90px;
+        width: 90px;
+    }
 }
 
 @media only screen and (max-width: 600px){
     #profile img {
         max-width: 140px;
         max-height: 140px;
+    }
+
+    #artist_img {
+        height: 70px;
+        width: 70px;
     }
 }

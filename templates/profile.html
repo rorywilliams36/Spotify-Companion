@@ -28,7 +28,7 @@
             {% if artists %}
               {% for artist in artists: %}
                 <li>{{artist['name']}}</li>
-                <img src="{{artist['images'][0]['url']}}" id="artist" height="100" width="100">
+                <img src="{{artist['images'][0]['url']}}" id="artist_img" height="100" width="100">
               {% endfor %}
             {% endif %}
           </ol>
@@ -40,7 +40,7 @@
           <ol>
             {% if tracks %}
               {% for track in tracks: %}
-                <img src="{{track['album']['images'][0]['url']}}" id="artist" height="100" width="100">
+                <img src="{{track['album']['images'][0]['url']}}" id="artist_img" height="100" width="100">
                 <li>
                   <p id="track">{{track['name']}}</p>
                   <p id="artist">{{track['artists'][0]['name']}}</p>
