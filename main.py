@@ -17,6 +17,7 @@ load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 REDIRECT_URL = "http://127.0.0.1:5000/callback"
+HOME = 'http://127.0.0.1:5000'
 
 # Init app
 app = Flask(__name__)
@@ -45,14 +46,14 @@ def callback_page():
 
 @app.route('/view')
 def view():
-    if session['token_info']:
+    if session.get('token_info'):
         profile = get_profile()
-        status, tracks = get_top_item(item_type='tracks', limit=10)
-        status, artists = get_top_item(item_type='artists', limit=10)
+        status, tracks = get_top_item(item_type='tracks', limit=50)
+        status, artists = get_top_item(item_type='artists', limit=50)
         status, playlists = get_current_playlists(limit=20)
         status, saved_tracks = get_saved_tracks()
-        print(playlists)
         return render_template('profile.html', profile=profile, artists=artists, tracks=tracks)
+    return redirect(url_for('login'))
 
 @app.route('/error')
 def error():
@@ -61,8 +62,8 @@ def error():
 def access_token(code, state):
     # Checks if successful login retruned correct results
     if code == None:
-        return redirect('/')
-
+        return redirect(url_for('login'))
+        
     auth_base64 = encode_client_creds()
 
     # Format for request to get access token
@@ -138,4 +139,4 @@ def get_oauth():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
