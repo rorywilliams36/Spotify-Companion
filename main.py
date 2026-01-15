@@ -108,7 +108,7 @@ def refresh_token():
 # Acquires the access token from the session and calls refresh in case of expiry
 def get_access_token():
     if not session['token_info']:
-        return redirect('/')
+        return redirect(url_for('login'))
     token_json = session["token_info"]
     token = token_json['access_token']
     expiry = token_json['expires_in']
