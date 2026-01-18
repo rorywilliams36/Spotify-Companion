@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">    <meta charset="utf-8"> 
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Your Profile</title>
-  </head>
+{% extends 'base.html' %}
+    {% block title %} DashBoard {% endblock %}
 
-  <header id="profile">
-    <!-- Profile Header -->
-    {% if profile %}
-      <img src="{{profile['images'][0]['url']}}" id="profile" height="300" width="300">
-      <div>
-        <h1>{{ profile['display_name'] }}</h1>
-        <p>Followers: {{ profile['followers']['total'] }}</p>
-      </div>
-    {% endif %}
-  </header>
-
-  <body>
+{% block content %}
     <div class="container">
       <div class="row justify-content-start">
         <!-- Artists -->
-        <div class="col right">
+        <div class="col left">
           <h3>Your Top Artists:</h3>
           <ol>
             {% if artists %}
@@ -38,7 +21,7 @@
         </div>
 
         <!-- Tracks -->
-        <div class="col left">
+        <div class="col right">
           <h3>Your Top Tracks:</h3>
           <ol>
             {% if tracks %}
@@ -57,9 +40,4 @@
       </div>
     </div>
     <!-- Genres -->
-  </body>
-
-  <footer>
-    <p></p>
-  </footer>
-</html>
+{% endblock %}
