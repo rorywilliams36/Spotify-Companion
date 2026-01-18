@@ -22,29 +22,34 @@
     <div class="container">
       <div class="row justify-content-start">
         <!-- Artists -->
-        <div class="col">
+        <div class="col right">
           <h3>Your Top Artists:</h3>
           <ol>
             {% if artists %}
-              {% for artist in artists: %}
-                <li>{{artist['name']}}</li>
+              {% for artist in artists[:10]: %}
+              <div id="artist_list">
                 <img src="{{artist['images'][0]['url']}}" id="artist_img" height="100" width="100">
+                <li>{{artist['name']}}</li>
+                <br>
+              </div>
               {% endfor %}
             {% endif %}
           </ol>
         </div>
 
         <!-- Tracks -->
-        <div class="col">
+        <div class="col left">
           <h3>Your Top Tracks:</h3>
           <ol>
             {% if tracks %}
-              {% for track in tracks: %}
+              {% for track in tracks[:10]: %}
+              <div id="track_list">
                 <img src="{{track['album']['images'][0]['url']}}" id="artist_img" height="100" width="100">
                 <li>
                   <p id="track">{{track['name']}}</p>
                   <p id="artist">{{track['artists'][0]['name']}}</p>
                 </li>
+              </div>
               {% endfor %}
             {% endif %}
           </ol>

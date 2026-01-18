@@ -3,7 +3,12 @@
     color: aliceblue;
 }
 
+img {
+    border-radius: 50%;
+}
 
+
+/* Profile Card */
 #profile {
     background-color: #141616;
     display: flex;   
@@ -25,10 +30,28 @@
     max-height: auto;
 }
 
+/* Artists/Song Display */
+body {
+    background-color: rgb(17, 17, 17);
+    justify-content: center;
+    align-items: center;
+}
+
+body > h3 {
+    font-style: bold;
+}
 
 #artist {
     color:lightgray;
     margin-top: 0%;
+}
+
+#artist_list {
+    padding-bottom: 0.85em;
+}
+
+#artist_list > li {
+    padding-top: 0.2em;
 }
 
 #artist_img {
@@ -40,26 +63,38 @@
     margin-bottom: 0;
 }
 
-img {
-    border-radius: 50%;
+#track_list {
+    padding-bottom: 0.1em;
 }
 
-body {
-    background-color: rgb(17, 17, 17);
-    justify-content: center;
-    align-items: center;
+
+.row {
+    display: flex;
 }
 
-body > h3 {
-    font-style: bold;
+.col {
+    width: 50%;
+    padding-top: 1.2em;
+    padding-bottom: 1.2em;
 }
 
+.left {
+    padding-right: 10%;
+}
+
+.right {
+    padding-left: 10%;
+}
+
+/*  */
 footer {
     background-color: #17191a;
     color:lightgray
 }
 
 
+
+/* Screen Sizes */
 @media only screen and (max-width: 750px){
     #profile img {
         max-width: 210px;
