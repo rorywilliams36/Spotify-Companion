@@ -42,18 +42,23 @@ def callback_page():
     # Store token in session cookie
     session['token_info'] = token
     # Moves onto main page
-    return redirect(url_for('view', _external=True))
+    return redirect(url_for('home', _external=True))
 
-@app.route('/view')
-def view():
+@app.route('/home')
+def home():
     if session.get('token_info'):
         profile = get_profile()
         status, tracks = get_top_item(item_type='tracks', limit=50)
         status, artists = get_top_item(item_type='artists', limit=50)
         status, playlists = get_current_playlists(limit=20)
         status, saved_tracks = get_saved_tracks()
-        return render_template('profile.html', profile=profile, artists=artists, tracks=tracks)
+        return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
     return redirect(url_for('login'))
+
+@app.route('/stats') 
+def stats():
+    pass
+
 
 @app.route('/error')
 def error():
