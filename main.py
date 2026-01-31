@@ -57,11 +57,16 @@ def callback_page():
 
 @app.route('/dashboard')
 def profile():
+    # Check session key
     if session.get('token_info'):
-        profile = get_profile()
-        status, tracks = get_top_item(item_type='tracks', limit=10, time_range="long_term")
-        status, artists = get_top_item(item_type='artists', limit=10, time_range="long_term")
-        return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
+        # Check user data is stored in cache
+        if cache.get('user_'):
+            # Get relevant data from cache for profile/dashboard page
+            user_data = cache.get('user_')
+            profile = user_data['profile']
+            tracks = user_data['tracks']['long_term'][:10]
+            artists = user_data['artists']['long_term'][:10]
+            return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
     return redirect(url_for('login'))
 
 @app.route('/stats') 
