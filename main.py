@@ -58,16 +58,14 @@ def callback_page():
 
 @app.route('/dashboard')
 def profile():
-    # Check session key
-    if session.get('token_info'):
-        # Check user data is stored in cache
-        if cache.get('user_'):
-            # Get relevant data from cache for profile/dashboard page
-            user_data = cache.get('user_')
-            profile = user_data['profile']
-            tracks = user_data['tracks']['long_term'][:10]
-            artists = user_data['artists']['long_term'][:10]
-            return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
+    # Check session key and cache exists
+    if session.get('token_info') and cache.get('user_'):
+        # Get relevant data from cache for profile/dashboard page
+        user_data = cache.get('user_')
+        profile = user_data['profile']
+        tracks = user_data['tracks']['long_term'][:10]
+        artists = user_data['artists']['long_term'][:10]
+        return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
     return redirect(url_for('login'))
 
 @app.route('/stats') 
