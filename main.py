@@ -21,8 +21,9 @@ client_secret = os.getenv("CLIENT_SECRET")
 REDIRECT_URL = "http://127.0.0.1:5000/callback"
 HOME = 'http://127.0.0.1:5000'
 
-config = { "DEBUG": True,          # some Flask specific configs
-    "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
+# Setup app and cache configs
+config = { "DEBUG": True,          
+    "CACHE_TYPE": "SimpleCache", 
     "CACHE_DEFAULT_TIMEOUT": 1800,
     "SESSION_COOKIE_NAME": "Spotify Cookie"
 } 
