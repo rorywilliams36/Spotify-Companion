@@ -7,7 +7,9 @@ import time
 import base64
 import json
 import secrets
+
 from flask import Flask, url_for, session, redirect, request, render_template
+from flask_caching import Cache
 
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -19,10 +21,17 @@ client_secret = os.getenv("CLIENT_SECRET")
 REDIRECT_URL = "http://127.0.0.1:5000/callback"
 HOME = 'http://127.0.0.1:5000'
 
+config = { "DEBUG": True,          # some Flask specific configs
+    "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 1800,
+    "SESSION_COOKIE_NAME": "Spotify Cookie"
+} 
+
 # Init app
 app = Flask(__name__)
-app.config["SESSION_COOKIE_NAME"] = "Spotify Cookie"
+app.config.from_mapping(config)
 app.secret_key = secrets.token_hex() 
+cache = Cache(app)
 
 @app.route('/')
 # login to user profile
@@ -41,6 +50,8 @@ def callback_page():
     token = access_token(code, state)
     # Store token in session cookie
     session['token_info'] = token
+    # Store User's API data in cache
+    store_data()
     # Moves onto main page
     return redirect(url_for('profile', _external=True))
 
@@ -61,6 +72,13 @@ def stats(item_type: str = 'artists', time_range: str = 'long_term'):
 @app.route('/error')
 def error():
     pass
+
+# Stores all relevant User API data in the cache
+@cache.cached(key_prefix='user_')
+def store_data():
+    user_data = get_full_data()
+    return user_data
+
 
 def access_token(code, state):
     # Checks if successful login retruned correct results
@@ -106,6 +124,11 @@ def refresh_token():
     json_result = json.loads(res.content)
     token = json_result["access_token"]
     session['token_info'] = token
+
+    # Reinstate cache
+    cache.clear()
+    store_data()
+
     return json_result
 
 # Acquires the access token from the session and calls refresh in case of expiry
@@ -138,6 +161,7 @@ def get_oauth():
         redirect_uri = url_for('callback_page', _external=True), 
         scope = 'playlist-modify-public playlist-modify-private user-top-read user-read-recently-played user-library-read user-read-email user-read-private'
     )
+
 
 
 

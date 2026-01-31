@@ -16,7 +16,7 @@ def get_profile():
     return json_result
 
 
-def get_top_item(item_type: str = 'tracks', limit: int = 2, time_range: str = 'medium_term', offset: int = 0):
+def get_top_item(item_type: str = 'tracks', limit: int = 2, time_range: str = 'short_term', offset: int = 0):
     '''
     Returns the top tracks or artists the user listens to
 
@@ -83,10 +83,24 @@ def get_saved_tracks(limit: int = 2, offset: int = 0):
     return res.status_code, None
 
 
+def get_full_data():
+    time_ranges = ["long_term" , "medium_term", "short_term"]
+    # Setup dict with relevant keys for eas of access in the cache
+    user_data = {"profile" : {}, "artists" : {"long_term" : {}, "medium_term" : {} , "short_term" : {}}, 
+    "tracks" :  {"long_term" : {}, "medium_term" : {} , "short_term" : {}}}
 
+    # Get the user's profile data
+    user_data['profile'] = get_profile()
 
+    # Calls API for each time range then gets and sets the user's tracks and artists
+    for tr in time_ranges:
+        a_status, tracks = get_top_item(item_type='tracks', limit=50, time_range=tr)
+        t_status, artists = get_top_item(item_type='artists', limit=50, time_range=tr)
 
+        user_data['tracks'][tr] = tracks
+        user_data['artists'][tr] = artists
 
+    return user_data
 
 # Returns the top tracks in a dictionary to display easier
 def extract_top_tracks(tracks):
