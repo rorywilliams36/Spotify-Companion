@@ -9,7 +9,7 @@
           <h3>Your Top Artists:</h3>
           <ol>
             {% if artists %}
-              {% for artist in artists[:10]: %}
+              {% for artist in artists: %}
               <div id="artist_list">
                 <img src="{{artist['images'][0]['url']}}" id="artist_img" height="100" width="100">
                 <li>{{artist['name']}}</li>
@@ -25,7 +25,7 @@
           <h3>Your Top Tracks:</h3>
           <ol>
             {% if tracks %}
-              {% for track in tracks[:10]: %}
+              {% for track in tracks: %}
               <div id="track_list">
                 <img src="{{track['album']['images'][0]['url']}}" id="artist_img" height="100" width="100">
                 <li>
