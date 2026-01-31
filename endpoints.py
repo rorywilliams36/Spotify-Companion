@@ -86,8 +86,8 @@ def get_saved_tracks(limit: int = 2, offset: int = 0):
 def get_full_data():
     time_ranges = ["long_term" , "medium_term", "short_term"]
     # Setup dict with relevant keys for eas of access in the cache
-    user_data = {"profile" : {}, "artists" : {"long_term" : {}, "medium_term" : {} , "short_term" : {}}, 
-    "tracks" :  {"long_term" : {}, "medium_term" : {} , "short_term" : {}}}
+    user_data = {"profile" : {}, "artists" : {"long_term" : [], "medium_term" : [] , "short_term" : []}, 
+    "tracks" :  {"long_term" : [], "medium_term" : [] , "short_term" : []}}
 
     # Get the user's profile data
     user_data['profile'] = get_profile()
