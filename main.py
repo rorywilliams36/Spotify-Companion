@@ -68,9 +68,18 @@ def profile():
         return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
     return redirect(url_for('login'))
 
-@app.route('/stats') 
-def stats(item_type: str = 'artists', time_range: str = 'long_term'):
-    pass
+@app.route('/stats/<item_type>/<time_range>') 
+def stats(item_type, time_range):
+    user_data = cache.get('user_')
+    if item_type not in ("tracks", "artists"):
+        item_type = 'artists'
+
+    if time_range not in ("short_term", "medium_term", "long_term"):
+        time_range = 'long_term'
+    
+    print(item_type)
+    items = user_data[item_type][time_range]
+    return render_template('stats.html', items=items, item_type=item_type, time_range=time_range)
 
 
 @app.route('/error')
