@@ -77,7 +77,6 @@ def stats(item_type, time_range):
     if time_range not in ("short_term", "medium_term", "long_term"):
         time_range = 'long_term'
     
-    print(item_type)
     items = user_data[item_type][time_range]
     return render_template('stats.html', items=items, item_type=item_type, time_range=time_range)
 

@@ -3,6 +3,35 @@
 
 
 {% block content %}
+    <!-- Button Filters -->
+    <div class="filters">
+        <!-- Item Type -->
+        <div class="btn-group dropdown" id="item-type">
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Data Type
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Artists</a>
+                <a class="dropdown-item" href="#">Tracks</a>
+            </div>
+        </div>
+        <!-- Time Range -->
+        <div class="btn-group dropdown" id="time-range">
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Time Range
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Short-Term (last 6wk)</a>
+                <a class="dropdown-item" href="#">Medium-Term (last 6mo)</a>
+                <a class="dropdown-item" href="#">Long-Term (last 1yr)</a>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-warning" onclick="">Filter</button>
+        </div>
+    </div>
+    
+
     <table>
         <thead>
             <tr>
