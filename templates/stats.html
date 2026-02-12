@@ -21,16 +21,19 @@
                 <option value="long_term">Long-Term (last 1yr)</option>
             </select>
         </div>
-        <div class="btn-group">
+        <!-- Filter Button -->
+        <div>
             <button type="button" class="btn btn-warning" onclick=getFilterOptions()>Filter</button>
             <script>
                 function getFilterOptions() {
+                    // Gets values from select
                     var tr = document.getElementById('time-range');
                     var it = document.getElementById('item-type');
 
                     var time_range = tr.value;
                     var item_type = it.value;
 
+                    // Loads new page with options from select
                     let url = `${script_root}/stats/${item_type}/${time_range}`
                     window.location.replace(url);
                 };
