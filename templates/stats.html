@@ -6,28 +6,35 @@
     <!-- Button Filters -->
     <div class="filters">
         <!-- Item Type -->
-        <div class="btn-group dropdown" id="item-type">
-            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Data Type
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Artists</a>
-                <a class="dropdown-item" href="#">Tracks</a>
-            </div>
-        </div>
+        <div>
+            <select class="form-select" id="item-type" aria-label="Default select example">
+                <option selected>Item Type</option>
+                <option value="artists">Artists</option>
+                <option value="tracks">Tracks</option>
+            </select>
         <!-- Time Range -->
-        <div class="btn-group dropdown" id="time-range">
-            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Time Range
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Short-Term (last 6wk)</a>
-                <a class="dropdown-item" href="#">Medium-Term (last 6mo)</a>
-                <a class="dropdown-item" href="#">Long-Term (last 1yr)</a>
-            </div>
+        <div>
+            <select class="form-select" id="time-range" aria-label="Default select example">
+                <option selected>Time Range</option>
+                <option value="short_term">Short-Term (last 6wks)</option>
+                <option value="medium_term">Medium-Term (last 6mo)</option>
+                <option value="long_term">Long-Term (last 1yr)</option>
+            </select>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-warning" onclick="">Filter</button>
+            <button type="button" class="btn btn-warning" onclick=getFilterOptions()>Filter</button>
+            <script>
+                function getFilterOptions() {
+                    var tr = document.getElementById('time-range');
+                    var it = document.getElementById('item-type');
+
+                    var time_range = tr.value;
+                    var item_type = it.value;
+
+                    let url = `${script_root}/stats/${item_type}/${time_range}`
+                    window.location.replace(url);
+                };
+            </script>
         </div>
     </div>
     
@@ -73,3 +80,4 @@
 
     </table>
 {% endblock %}
+

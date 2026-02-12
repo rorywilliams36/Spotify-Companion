@@ -7,6 +7,9 @@ img {
     border-radius: 50%;
 }
 
+select {
+    color: black;
+}
 
 /* Profile Card */
 #profile {
