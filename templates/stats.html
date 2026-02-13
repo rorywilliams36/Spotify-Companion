@@ -52,7 +52,9 @@
                 
                 // Returns the parameters of the current url/path
                 function get_current_url_options() {
+                    // Gets current path
                     let current_url = window.location.href;
+                    // Returns array containing the url params
                     let url_options = current_url.split('/');
                     return url_options.slice(-2);
                 }
@@ -83,6 +85,7 @@
             {% for item in items %}
                 <tr>
                     <td>{{ loop.index }}</td>
+                    <!-- Artists statistics -->
                     {% if item_type == 'artists' %}
                         <td>
                             <img src="{{item.images[0]['url']}}" id="artist_img" height="100" width="100">
@@ -97,6 +100,7 @@
                             <td>{{item.genres[:3]|join(", ")}}</td>
                         {% endif %}
 
+                    <!-- Track Statistics -->
                     {% else %}
                         <td>
                             <img src="{{item.album['images'][0]['url']}}" id="track_img" height="100" width="100">
