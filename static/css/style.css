@@ -105,8 +105,6 @@ table {
     margin-left: 5%;
     margin-right: 5%;
     font-size: 1em;
-    justify-content: center;
-    align-items: center;
     font-weight: bold;
     border: solid white;
 }
@@ -116,8 +114,16 @@ th {
     border-bottom: solid lightgray;
 }
 
+
 th, td {
     padding: 1.5em 2.5em;
+    border-bottom: solid lightgray;
+    border-top: solid lightgray;
+    text-align: center;
+}
+
+td > img {
+    margin-bottom: 5px;
 }
 
 /*  */
