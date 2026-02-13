@@ -66,13 +66,23 @@
                 <tr>
                     <td>{{ loop.index }}</td>
                     {% if item_type == 'artists' %}
-                        <td>{{item.name}}</td>
-                        <td>{{item.followers.get('total')}}</td>
+                        <td>
+                            <img src="{{item.images[0]['url']}}" id="artist_img" height="100" width="100">
+                            {{item.name}}
+                        </td>
+                        <td>{{"{:,}".format(item.followers.get('total'))}}</td>
                         <td>{{item.popularity}}</td>
-                        <td>{{item.genres}}</td>
+                        {% if item.genres[0] == Null %}
+                            <td>No Genres Found</td>
+                        {% else %}
+                            <td>{{item.genres[:3]|join(", ")}}</td>
+                        {% endif %}
 
                     {% else %}
-                        <td>{{item.name}}</td>  
+                        <td>
+                            <img src="{{item.album['images'][0]['url']}}" id="artist_img" height="100" width="100">
+                            {{item.name}}
+                        </td>  
                         <td>{{item.album['name']}}</td>
                         <td>{{item.artists[0]['name']}}</td>
                         <td>{{item.popularity}}</td>
