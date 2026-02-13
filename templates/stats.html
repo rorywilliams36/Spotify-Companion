@@ -55,7 +55,6 @@
                 {% else %}
                     <th>Song</th>
                     <th>Album</th>
-                    <th>Artist</th>
                     <th>Popularity</th>
                 {% endif %}
             </tr>
@@ -68,6 +67,7 @@
                     {% if item_type == 'artists' %}
                         <td>
                             <img src="{{item.images[0]['url']}}" id="artist_img" height="100" width="100">
+                            <br>
                             {{item.name}}
                         </td>
                         <td>{{"{:,}".format(item.followers.get('total'))}}</td>
@@ -80,11 +80,15 @@
 
                     {% else %}
                         <td>
-                            <img src="{{item.album['images'][0]['url']}}" id="artist_img" height="100" width="100">
+                            <img src="{{item.album['images'][0]['url']}}" id="track_img" height="100" width="100">
+                            <br>
                             {{item.name}}
-                        </td>  
+                            <br>
+                            <div id="artist">
+                                {{item.artists[0]['name']}}
+                            </div>
+                        </td>
                         <td>{{item.album['name']}}</td>
-                        <td>{{item.artists[0]['name']}}</td>
                         <td>{{item.popularity}}</td>
                     {% endif %}
                 </tr>

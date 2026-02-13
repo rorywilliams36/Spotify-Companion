@@ -47,6 +47,7 @@ body > h3 {
 #artist {
     color:lightgray;
     margin-top: 0%;
+    font-weight: normal;
 }
 
 #artist_list {
@@ -70,6 +71,12 @@ body > h3 {
     padding-bottom: 0.1em;
 }
 
+#track_img {
+    border-radius: 0;
+    height: 120px;
+    width: 120px;
+}
+
 
 .row {
     display: flex;
@@ -91,45 +98,70 @@ body > h3 {
     padding-right: 20%;
 }
 
+
+/* Stats page (Tables) */
+table {
+    min-width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size: 1em;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border: solid white;
+}
+
+th {
+    font-size: 1.1em;
+    border-bottom: solid lightgray;
+}
+
+th, td {
+    padding: 1.5em 2.5em;
+}
+
 /*  */
 footer {
     background-color: #17191a;
     color:lightgray
 }
 
-/* Stats page (Tables) */
-table {
-    max-width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    font-size: 1em;
-}
 
-th, td {
-    padding: 2.5em;
-}
 
 /* Screen Sizes */
 @media only screen and (max-width: 750px){
+    * {
+        font-size: 11pt;
+    }
+
     #profile img {
         max-width: 210px;
         max-height: 210px;
     }
 
-    #artist_img {
+    #artist_img, #track_img{
         height: 90px;
         width: 90px;
+    }
+    
+    th {
+        font-size: 1em;
     }
 }
 
 @media only screen and (max-width: 600px){
+    * {
+        font-size: 10pt;
+    }
+
     #profile img {
         max-width: 140px;
         max-height: 140px;
     }
 
-    #artist_img {
+    #artist_img, #track_img{
         height: 70px;
         width: 70px;
     }
+
 }
