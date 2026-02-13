@@ -32,11 +32,30 @@
 
                     var time_range = tr.value;
                     var item_type = it.value;
+                    
+                    // Checks if a option hasn't been selected
+                    // Sets the filter option to the one in the current url
+                    if (item_type == 'Item Type') {
+                        let current_url = get_current_url_options();
+                        item_type = current_url[0];
+                    };
+                    
+                    if (time_range == 'Time Range') {
+                        let current_url = get_current_url_options();
+                        time_range = current_url[1];
+                    };
 
                     // Loads new page with options from select
                     let url = `${script_root}/stats/${item_type}/${time_range}`
                     window.location.replace(url);
                 };
+                
+                // Returns the parameters of the current url/path
+                function get_current_url_options() {
+                    let current_url = window.location.href;
+                    let url_options = current_url.split('/');
+                    return url_options.slice(-2);
+                }
             </script>
         </div>
     </div>
