@@ -4,62 +4,59 @@
 
 {% block content %}
     <!-- Button Filters -->
-    <div class="filters">
+    <div class="filters d-flex gap-2 align-items-center mb-3">
         <!-- Item Type -->
-        <div>
-            <select class="form-select" id="item-type" aria-label="Default select example">
-                <option selected>Item Type</option>
-                <option value="artists">Artists</option>
-                <option value="tracks">Tracks</option>
-            </select>
+        <select class="form-select" id="item-type" aria-label="Default select example">
+            <option selected>Item Type</option>
+            <option value="artists">Artists</option>
+            <option value="tracks">Tracks</option>
+        </select>
+
         <!-- Time Range -->
-        <div>
-            <select class="form-select" id="time-range" aria-label="Default select example">
-                <option selected>Time Range</option>
-                <option value="short_term">Short-Term (last 6wks)</option>
-                <option value="medium_term">Medium-Term (last 6mo)</option>
-                <option value="long_term">Long-Term (last 1yr)</option>
-            </select>
-        </div>
+        <select class="form-select" id="time-range" aria-label="Default select example">
+            <option selected>Time Range</option>
+            <option value="short_term">last 6 weeks</option>
+            <option value="medium_term">last 6 months</option>
+            <option value="long_term">last 1 year</option>
+        </select>
+        
         <!-- Filter Button -->
-        <div>
-            <button type="button" class="btn btn-warning" onclick=getFilterOptions()>Filter</button>
-            <script>
-                function getFilterOptions() {
-                    // Gets values from select
-                    var tr = document.getElementById('time-range');
-                    var it = document.getElementById('item-type');
+        <button type="button" class="btn btn-warning" onclick=getFilterOptions()>Filter</button>
+        <script>
+            function getFilterOptions() {
+                // Gets values from select
+                var tr = document.getElementById('time-range');
+                var it = document.getElementById('item-type');
 
-                    var time_range = tr.value;
-                    var item_type = it.value;
-                    
-                    // Checks if a option hasn't been selected
-                    // Sets the filter option to the one in the current url
-                    if (item_type == 'Item Type') {
-                        let current_url = get_current_url_options();
-                        item_type = current_url[0];
-                    };
-                    
-                    if (time_range == 'Time Range') {
-                        let current_url = get_current_url_options();
-                        time_range = current_url[1];
-                    };
-
-                    // Loads new page with options from select
-                    let url = `${script_root}/stats/${item_type}/${time_range}`
-                    window.location.replace(url);
+                var time_range = tr.value;
+                var item_type = it.value;
+                
+                // Checks if a option hasn't been selected
+                // Sets the filter option to the one in the current url
+                if (item_type == 'Item Type') {
+                    let current_url = get_current_url_options();
+                    item_type = current_url[0];
                 };
                 
-                // Returns the parameters of the current url/path
-                function get_current_url_options() {
-                    // Gets current path
-                    let current_url = window.location.href;
-                    // Returns array containing the url params
-                    let url_options = current_url.split('/');
-                    return url_options.slice(-2);
-                }
-            </script>
-        </div>
+                if (time_range == 'Time Range') {
+                    let current_url = get_current_url_options();
+                    time_range = current_url[1];
+                };
+
+                // Loads new page with options from select
+                let url = `${script_root}/stats/${item_type}/${time_range}`
+                window.location.replace(url);
+            };
+            
+            // Returns the parameters of the current url/path
+            function get_current_url_options() {
+                // Gets current path
+                let current_url = window.location.href;
+                // Returns array containing the url params
+                let url_options = current_url.split('/');
+                return url_options.slice(-2);
+            }
+        </script>
     </div>
     
 

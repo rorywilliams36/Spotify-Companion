@@ -7,11 +7,11 @@ img {
     border-radius: 50%;
 }
 
-select {
-    color: black;
-}
+/* ------------ Nav Bar ------------ */
 
-/* Profile Card */
+
+
+/* ------------ Profile Card ------------ */
 #profile {
     background-color: #141616;
     display: flex;   
@@ -43,7 +43,7 @@ body > h3 {
     font-style: bold;
 }
 
-/* Artists/Song Display */
+/* ------------ Artists/Song Display ------------ */
 #artist {
     color:lightgray;
     margin-top: 0%;
@@ -77,7 +77,6 @@ body > h3 {
     width: 120px;
 }
 
-
 .row {
     display: flex;
 }
@@ -99,7 +98,38 @@ body > h3 {
 }
 
 
-/* Stats page (Tables) */
+/* ------------ Stats page  ------------ */
+
+/* ------------ Filter Buttons ------------ */
+
+select, option {
+    color: aliceblue;
+}
+
+select {
+    background-color: #34cb6e;
+}
+
+.filters select {
+    margin-right: 1em;
+    align-items: stretch;
+}
+
+.filters {
+    width: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.filters > button, select {
+    width: 7em;
+    height: 2.5em;
+}
+
+
+
+/* ------------ Tables ------------*/
+
 table {
     min-width: 90%;
     margin-left: 5%;
@@ -126,7 +156,7 @@ td > img {
     margin-bottom: 5px;
 }
 
-/*  */
+/* ------------ */
 footer {
     background-color: #17191a;
     color:lightgray
@@ -134,7 +164,7 @@ footer {
 
 
 
-/* Screen Sizes */
+/* ------------ Screen Sizes ------------ */
 @media only screen and (max-width: 750px){
     * {
         font-size: 11pt;
