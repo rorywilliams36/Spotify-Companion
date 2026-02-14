@@ -70,16 +70,26 @@ def profile():
 
 @app.route('/stats/<item_type>/<time_range>') 
 def stats(item_type, time_range):
-    user_data = cache.get('user_')
-    if item_type not in ("tracks", "artists"):
-        item_type = 'artists'
+    if session.get('token_info') and cache.get('user_'):
+        user_data = cache.get('user_')
+        # sets default options if none are selected
+        if item_type not in ("tracks", "artists"):
+            item_type = 'artists'
 
-    if time_range not in ("short_term", "medium_term", "long_term"):
-        time_range = 'long_term'
-    
-    items = user_data[item_type][time_range]
-    return render_template('stats.html', items=items, item_type=item_type, time_range=time_range)
+        if time_range not in ("short_term", "medium_term", "long_term"):
+            time_range = 'long_term'
+        
+        # Gets items and loads page
+        items = user_data[item_type][time_range]
+        return render_template('stats.html', items=items, item_type=item_type, time_range=time_range)
+    return redirect(url_for('login'))
 
+@app.route('/playlist')
+def playlist():
+    if session.get('token_info') and cache.get('user_'):
+        user_data = cache.get('user_')
+        return render_template('playlist.html')
+    return redirect(url_for('login'))
 
 @app.route('/error')
 def error():
@@ -112,6 +122,7 @@ def access_token(code, state):
         "redirect_uri" : url_for('callback_page', _external=True), 
         }
 
+    # post request for access token
     res = post(url, headers=header, data=data)
     token = json.loads(res.content)
     return token
@@ -122,6 +133,7 @@ def refresh_token():
 
     auth_base64 = encode_client_creds()
 
+    # Format Request
     url = 'https://accounts.spotify.com/api/token' 
     headers = {
         'content-type' : 'application/x-www-form-urlencoded', 
@@ -131,7 +143,8 @@ def refresh_token():
         'grant-type' : 'refresh_token',
         'refresh-token' : token
     }
-    
+
+    # Post request and save token
     res = post(url, headers=header, data=data)
     json_result = json.loads(res.content)
     token = json_result["access_token"]
