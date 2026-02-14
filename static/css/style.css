@@ -156,6 +156,19 @@ td > img {
     margin-bottom: 5px;
 }
 
+/* ------------ Playists ------------*/
+
+form {
+    min-width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.form_text, .form_btn {
+    max-width: 20%;
+}
+
+
 /* ------------ */
 footer {
     background-color: #17191a;
