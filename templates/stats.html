@@ -7,19 +7,19 @@
     <div class="filters d-flex gap-2 align-items-center mb-3">
         <!-- Item Type -->
         <select class="form-select" id="item-type" aria-label="Default select example">
-            <option selected>Item Type</option>
+            <option selected disabled>Item Type</option>
             <option value="artists">Artists</option>
             <option value="tracks">Tracks</option>
         </select>
 
         <!-- Time Range -->
         <select class="form-select" id="time-range" aria-label="Default select example">
-            <option selected>Time Range</option>
+            <option selected disabled>Time Range</option>
             <option value="short_term">last 6 weeks</option>
             <option value="medium_term">last 6 months</option>
             <option value="long_term">last 1 year</option>
         </select>
-        
+
         <!-- Filter Button -->
         <button type="button" class="btn btn-warning" onclick=getFilterOptions()>Filter</button>
         <script>
