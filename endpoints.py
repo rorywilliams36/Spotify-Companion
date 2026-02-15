@@ -1,17 +1,14 @@
-from main import get_access_token, get_auth_header
-
 import json
-from requests import post, get
-from flask import Flask, url_for, session, redirect, request, render_template
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+from requests import get
+
+from main import get_access_token, get_auth_header
 
 # returns JSON payload (dict) for the current user's profile
 def get_profile():
     url = "https://api.spotify.com/v1/me"
     token = get_access_token()
     auth_header = get_auth_header(token)
-    res = get(url, headers=auth_header)
+    res = get(url, headers=auth_header, timeout=10)
     json_result = json.loads(res.content)
     return json_result
 
@@ -33,7 +30,7 @@ def get_top_item(item_type: str = 'tracks', limit: int = 2, time_range: str = 's
     url = f'https://api.spotify.com/v1/me/top/{item_type}?limit={limit}&time_range={time_range}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
-    res = get(url, headers=auth_header)
+    res = get(url, headers=auth_header, timeout=10)
     if res.status_code == 200:
         json_result = json.loads(res.content)
         return res.status_code, json_result['items']
@@ -55,7 +52,7 @@ def get_current_playlists(limit: int = 2, offset: int = 0):
     url = f'https://api.spotify.com/v1/me/playlists?limit={limit}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
-    res = get(url, headers=auth_header)
+    res = get(url, headers=auth_header, timeout=10)
     if res.status_code == 200:
         json_result = json.loads(res.content)
         return res.status_code, json_result
@@ -76,12 +73,11 @@ def get_saved_tracks(limit: int = 2, offset: int = 0):
     url = f'https://api.spotify.com/v1/me/tracks?limit={limit}&offset={offset}'
     token = get_access_token()
     auth_header = get_auth_header(token)
-    res = get(url, headers=auth_header)
+    res = get(url, headers=auth_header, timeout=10)
     if res.status_code == 200:
         json_result = json.loads(res.content)
         return res.status_code, json_result['items']
     return res.status_code, None
-
 
 def get_full_data():
     time_ranges = ["long_term" , "medium_term", "short_term"]

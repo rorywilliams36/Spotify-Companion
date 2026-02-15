@@ -1,18 +1,17 @@
-from endpoints import *
-
-from dotenv import load_dotenv
-from requests import post, get
 import os
-import time
 import base64
 import json
 import secrets
 
+from dotenv import load_dotenv
+from requests import post
+
 from flask import Flask, url_for, session, redirect, request, render_template
 from flask_caching import Cache
 
-import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+
+import endpoints
 
 # Load client id and secret from env file
 load_dotenv()
@@ -22,13 +21,13 @@ REDIRECT_URL = "http://127.0.0.1:5000/callback"
 HOME = 'http://127.0.0.1:5000'
 
 # Setup app and cache configs
-config = { "DEBUG": True,          
-    "CACHE_TYPE": "SimpleCache", 
+config = { "DEBUG": True,
+    "CACHE_TYPE": "SimpleCache",
     "CACHE_DEFAULT_TIMEOUT": 1800,
     "SESSION_COOKIE_NAME": "Spotify Cookie"
 } 
 
-# Init app
+# Init app and cache
 app = Flask(__name__)
 app.config.from_mapping(config)
 app.secret_key = secrets.token_hex() 
@@ -46,18 +45,18 @@ def callback_page():
     session.clear()
     # Get result from login
     code = request.args.get('code')
-    state = request.args.get('state')
+    # state = request.args.get('state')
     # Creates access token
-    token = access_token(code, state)
+    token = access_token(code)
     # Store token in session cookie
     session['token_info'] = token
     # Store User's API data in cache
     store_data()
     # Moves onto main page
-    return redirect(url_for('profile', _external=True))
+    return redirect(url_for('dashboard', _external=True))
 
 @app.route('/dashboard')
-def profile():
+def dashboard():
     # Check session key and cache exists
     if session.get('token_info') and cache.get('user_'):
         # Get relevant data from cache for profile/dashboard page
@@ -98,13 +97,12 @@ def error():
 # Stores all relevant User API data in the cache
 @cache.cached(key_prefix='user_')
 def store_data():
-    user_data = get_full_data()
+    user_data = endpoints.get_full_data()
     return user_data
 
-
-def access_token(code, state):
+def access_token(code):
     # Checks if successful login retruned correct results
-    if code == None:
+    if code is None:
         return redirect(url_for('login'))
         
     auth_base64 = encode_client_creds()
@@ -119,11 +117,11 @@ def access_token(code, state):
     data = {
         "code" : code,
         "grant_type": "authorization_code",
-        "redirect_uri" : url_for('callback_page', _external=True), 
-        }
+        "redirect_uri" : url_for('callback_page', _external=True)
+    }
 
     # post request for access token
-    res = post(url, headers=header, data=data)
+    res = post(url, headers=header, data=data, timeout=10)
     token = json.loads(res.content)
     return token
 
@@ -145,7 +143,7 @@ def refresh_token():
     }
 
     # Post request and save token
-    res = post(url, headers=header, data=data)
+    res = post(url, headers=headers, data=data, timeout=10)
     json_result = json.loads(res.content)
     token = json_result["access_token"]
     session['token_info'] = token
@@ -184,7 +182,9 @@ def get_oauth():
         client_id = client_id,
         client_secret = client_secret,
         redirect_uri = url_for('callback_page', _external=True), 
-        scope = 'playlist-modify-public playlist-modify-private user-top-read user-read-recently-played user-library-read user-read-email user-read-private'
+        scope = """playlist-modify-public playlist-modify-private 
+        user-top-read user-read-recently-played user-library-read
+        user-read-email user-read-private"""
     )
 
 
@@ -192,3 +192,4 @@ def get_oauth():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
