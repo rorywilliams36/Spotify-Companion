@@ -51,7 +51,7 @@ def callback_page():
     # Store token in session cookie
     session['token_info'] = token
     # Store User's API data in cache
-    store_data()
+    fetch_api_data()
     # Moves onto main page
     return redirect(url_for('dashboard', _external=True))
 
@@ -96,8 +96,8 @@ def error():
 
 # Stores all relevant User API data in the cache
 @cache.cached(key_prefix='user_')
-def store_data():
-    user_data = endpoints.get_full_data()
+def fetch_api_data():
+    user_data = endpoints.store_api_data()
     return user_data
 
 def access_token(code):
@@ -150,7 +150,7 @@ def refresh_token():
 
     # Reinstate cache
     cache.clear()
-    store_data()
+    fetch_api_data()
 
     return json_result
 

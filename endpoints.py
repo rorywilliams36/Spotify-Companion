@@ -79,7 +79,17 @@ def get_saved_tracks(limit: int = 2, offset: int = 0):
         return res.status_code, json_result['items']
     return res.status_code, None
 
-def get_full_data():
+def store_api_data():
+    '''
+    Retrives and formats the user's spotify data using relevant api calls
+
+    Returns:
+        JSON/Dict of the all user's spotify 'top items' and 'profile' data
+
+        Format:
+            {"profile" : {}, "artists" : {"long_term" : [], "medium_term" : [] , "short_term" : []}, 
+            "tracks" :  {"long_term" : [], "medium_term" : [] , "short_term" : []}}
+    '''
     time_ranges = ["long_term" , "medium_term", "short_term"]
     # Setup dict with relevant keys for eas of access in the cache
     user_data = {"profile" : {}, "artists" : {"long_term" : [], "medium_term" : [] , "short_term" : []}, 
