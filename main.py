@@ -90,6 +90,14 @@ def playlist():
         return render_template('playlist.html')
     return redirect(url_for('login'))
 
+@app.route('/create-playlist', methods=['POST'])
+def create_playlist():
+    time_range = request.form["time_range"]
+    size = int(request.form["playlist_size"])
+    name = request.form["playlist_name"]
+    return redirect(url_for('playlist'))
+    
+
 @app.route('/error')
 def error():
     pass
