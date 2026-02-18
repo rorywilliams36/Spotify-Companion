@@ -1,5 +1,5 @@
 import json
-from requests import get
+from requests import get, post
 
 from main import get_access_token, get_auth_header
 
@@ -107,6 +107,35 @@ def store_api_data():
         user_data['artists'][tr] = artists
 
     return user_data
+
+def create_playlist(name):
+    url = 'https://api.spotify.com/v1/me/playlists'
+    token = get_access_token()
+
+    header = {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    data = {
+        "name" : name,
+        "description" : 'my new playlist', 
+        "public" : False, 
+        "collaborative" : False
+    }
+
+    res = post(url, headers=header, json=data)
+    if res.status_code == 201:
+        playlist = json.loads(res.content)
+        playlist_id = playlist['id']
+        return playlist_id
+    return None
+
+def add_playlist(tracks, playlist_id, size):
+    url = ''
+    token = get_access_token()
+    auth_header = get_auth_header(token)
+    return
 
 # Returns the top tracks in a dictionary to display easier
 def extract_top_tracks(tracks):

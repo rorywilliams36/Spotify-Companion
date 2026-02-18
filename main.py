@@ -86,15 +86,23 @@ def stats(item_type, time_range):
 @app.route('/playlist')
 def playlist():
     if session.get('token_info') and cache.get('user_'):
-        user_data = cache.get('user_')
         return render_template('playlist.html')
     return redirect(url_for('login'))
 
 @app.route('/create-playlist', methods=['POST'])
 def create_playlist():
+    user_data = cache.get('user_')
+
     time_range = request.form["time_range"]
     size = int(request.form["playlist_size"])
-    name = request.form["playlist_name"]
+    name = str(request.form["playlist_name"])
+    tracks = user_data['tracks'][time_range]
+
+    playlist_id = endpoints.create_playlist(name)
+
+    if playlist_id is not None:
+        endpoints.add_playlist(tracks, playlist_id, size)
+
     return redirect(url_for('playlist'))
     
 
@@ -119,17 +127,17 @@ def access_token(code):
     url = "https://accounts.spotify.com/api/token"
 
     header = {
-        "Authorization": "Basic " + auth_base64,
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Authorization" : "Basic " + auth_base64,
+        "Content-Type" : "application/x-www-form-urlencoded"
     }
     data = {
         "code" : code,
-        "grant_type": "authorization_code",
+        "grant_type" : "authorization_code",
         "redirect_uri" : url_for('callback_page', _external=True)
     }
 
     # post request for access token
-    res = post(url, headers=header, data=data, timeout=10)
+    res = post(url, headers=header, json=data, timeout=10)
     token = json.loads(res.content)
     return token
 
@@ -151,7 +159,7 @@ def refresh_token():
     }
 
     # Post request and save token
-    res = post(url, headers=headers, data=data, timeout=10)
+    res = post(url, headers=headers, json=data, timeout=10)
     json_result = json.loads(res.content)
     token = json_result["access_token"]
     session['token_info'] = token
