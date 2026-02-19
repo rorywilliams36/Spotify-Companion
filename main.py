@@ -11,7 +11,8 @@ from flask_caching import Cache
 
 from spotipy.oauth2 import SpotifyOAuth
 
-import endpoints
+# imports class for api calls
+from endpoints import spotify 
 
 # Load client id and secret from env file
 load_dotenv()
@@ -23,7 +24,7 @@ HOME = 'http://127.0.0.1:5000'
 # Setup app and cache configs
 config = { "DEBUG": True,
     "CACHE_TYPE": "SimpleCache",
-    "CACHE_DEFAULT_TIMEOUT": 1800,
+    "CACHE_DEFAULT_TIMEOUT": 3600,
     "SESSION_COOKIE_NAME": "Spotify Cookie"
 } 
 
@@ -45,11 +46,17 @@ def callback_page():
     session.clear()
     # Get result from login
     code = request.args.get('code')
+
     # state = request.args.get('state')
     # Creates access token
     token = access_token(code)
+
+    # Sets token variable in spotify class to be used with endpoints
+    spotify.token = token
+
     # Store token in session cookie
     session['token_info'] = token
+
     # Store User's API data in cache
     fetch_api_data()
     # Moves onto main page
@@ -92,7 +99,7 @@ def playlist():
 @app.route('/create-playlist', methods=['POST'])
 def create_playlist():
     user_data = cache.get('user_')
-    
+
     time_range = request.form["time_range"]
     size = int(request.form["playlist_size"])
     name = str(request.form["playlist_name"])
@@ -101,10 +108,10 @@ def create_playlist():
 
     tracks = user_data['tracks'][time_range]
 
-    playlist_id = endpoints.create_playlist(name, description, public)
+    playlist_id = spotify.create_playlist(name, description, public)
 
     if playlist_id is not None:
-        status = endpoints.add_playlist(tracks, playlist_id, size)
+        status = spotify.add_playlist(tracks, playlist_id, size)
 
     return redirect(url_for('playlist'))
     
@@ -116,7 +123,7 @@ def error():
 # Stores all relevant User API data in the cache
 @cache.cached(key_prefix='user_')
 def fetch_api_data():
-    user_data = endpoints.store_api_data()
+    user_data = spotify.store_api_data()
     return user_data
 
 def access_token(code):
