@@ -3,8 +3,6 @@ from requests import get, post
 from flask import session
 
 class SpotifyClient():
-    def __init__(self):
-        self.token = None
 
     def get_token(self):
         if 'token_info' not in session:
