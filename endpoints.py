@@ -132,9 +132,29 @@ def create_playlist(name):
     return None
 
 def add_playlist(tracks, playlist_id, size):
-    url = ''
+    url = f'https://api.spotify.com/v1/playlists/{playlist_id}/items'
     token = get_access_token()
     auth_header = get_auth_header(token)
+    track_uris = []
+
+    for track in tracks[:size]:
+        track_uris.append(f'spotify:track:{track['id']}')
+
+    header = {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    data = {
+        'uris' : track_uris
+    }
+    
+    res = post(url, headers=header, json=data)
+    json_res = json.loads(res.content)
+    if res.status_code == 201:
+        print('success')
+        return
+    print('error')
     return
 
 # Returns the top tracks in a dictionary to display easier
