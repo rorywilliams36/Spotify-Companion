@@ -5,12 +5,13 @@ from flask import session
 class SpotifyClient():
 
     def get_token(self):
+        ''' Gets token from session cookie '''
         if 'token_info' not in session:
             return None
         return session['token_info']['access_token']
 
-    # returns JSON payload (dict) for the current user's profile
     def get_profile(self):
+        ''' returns JSON payload (dict) for the current user's profile '''
         url = "https://api.spotify.com/v1/me"
 
         res = self.place_get_request(url)
@@ -168,6 +169,16 @@ class SpotifyClient():
         return res.status_code
 
     def place_post_request(self, url, data):
+        '''
+        Sends Post Requests
+
+        Params:
+            url: String of the api endpoint
+            data: Data (dict/json) sent to endpoint
+
+        Return:
+            Response object containing the relevant content
+        '''
         token = self.get_token()
 
         header = {
@@ -177,6 +188,15 @@ class SpotifyClient():
         return post(url, headers=header, json=data, timeout=30)
 
     def place_get_request(self, url):
+        '''
+        Sends Get Requests
+
+        Params:
+            url: String of the api endpoint
+
+        Return:
+            Response object containing the relevant content
+        '''
         token = self.get_token()
 
         header = {

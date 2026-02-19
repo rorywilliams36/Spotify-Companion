@@ -14,6 +14,7 @@ client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 
 def access_token(code):
+    ''' Acquires access token to access spotify api '''
     # Checks if successful login retruned correct results
     if code is None:
         return redirect(url_for('login'))
@@ -32,8 +33,9 @@ def access_token(code):
     token = json.loads(res.content)
     return token
 
-# Refreshes token after time expiry
 def refresh_token():
+    ''' Refreshes token after time expiry '''
+
     token = session['token_info']
 
     # Format Request
@@ -57,8 +59,8 @@ def refresh_token():
 
     return json_result
 
-# Acquires the access token from the session and calls refresh in case of expiry
 def get_access_token():
+    '''Acquires the access token from the session and calls refresh in case of expiry'''
     if not session['token_info']:
         return redirect(url_for('login'))
     token_json = session["token_info"]
@@ -68,19 +70,15 @@ def get_access_token():
         token = refresh_token()
     return token
 
-# Creates utf-8 encoding of client credentials
 def encode_client_creds():
+    ''' Creates utf-8 encoding of client credentials '''
     auth_str = client_id + ":" + client_secret
     auth_bytes = auth_str.encode("utf-8")
     auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
     return auth_base64
 
-# Creates Auth header for spotify api token
-def get_auth_header(token):
-    return {"Authorization": "Bearer " + token}
-
-# Creates Oauth object for access to user's account
 def get_oauth():
+    ''' Creates Oauth object for access to user's account '''
     return SpotifyOAuth(
         client_id = client_id,
         client_secret = client_secret,
@@ -92,6 +90,18 @@ def get_oauth():
 
 
 def place_post_request(url, data):
+    '''
+    Sends Post Requests
+
+    Params:
+        url: String of the api endpoint
+        data: Data (dict/json) sent to endpoint
+
+    Return:
+        Response object containing the relevant content
+    '''
+
+    # Encodes the client credentials into base64
     auth_base64 = encode_client_creds()
 
     headers = {

@@ -7,9 +7,6 @@ from flask_caching import Cache
 from endpoints import spotify 
 import token_
 
-REDIRECT_URL = "http://127.0.0.1:5000/callback"
-HOME = 'http://127.0.0.1:5000'
-
 # Setup app and cache configs
 config = { "DEBUG": True,
     "CACHE_TYPE": "SimpleCache",
