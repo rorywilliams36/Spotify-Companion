@@ -11,6 +11,19 @@
             <input type="text" class="form-control" name="playlist_name" value="My Top Songs {{ time_range }}">   
         </div> 
 
+        <!-- Playlist Description -->
+        <div class="mb-3 form_text">
+            <label for="playlist_description" class="form-label">Playlist Description</label>
+            <input type="text" class="form-control" name="playlist_description" value="My new playlist">   
+        </div> 
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="public" value="True" id="checkDefault">
+            <label class="form-check-label" for="public">
+                Make Playlist Public
+            </label>
+        </div>
+
         <!-- Time Range -->
         <div class="mb-3">
             <label for="time_range" class="form-label">Time Range</label>

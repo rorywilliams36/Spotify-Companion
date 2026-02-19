@@ -108,12 +108,14 @@ def store_api_data():
 
     return user_data
 
-def create_playlist(name):
+def create_playlist(name, description, public):
     '''
     Creates spotify playlist using post request
 
     Params:
         name: string user's inputted name of playlist
+        description: string user's description of playlist
+        public: boolean stating if playlist is public or private
 
     Returns:
         playlist_id: spotify_id of the newly created playlist (string)
@@ -128,8 +130,8 @@ def create_playlist(name):
 
     data = {
         "name" : name,
-        "description" : 'my new playlist', 
-        "public" : False, 
+        "description" : description, 
+        "public" : public, 
         "collaborative" : False
     }
 

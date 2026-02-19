@@ -92,17 +92,19 @@ def playlist():
 @app.route('/create-playlist', methods=['POST'])
 def create_playlist():
     user_data = cache.get('user_')
-
+    
     time_range = request.form["time_range"]
     size = int(request.form["playlist_size"])
     name = str(request.form["playlist_name"])
+    public = True if request.form.get("public") else False
+    description = str(request.form["playlist_description"])
+
     tracks = user_data['tracks'][time_range]
 
-    endpoints.add_playlist(tracks, '1', size)
-    playlist_id = endpoints.create_playlist(name)
+    playlist_id = endpoints.create_playlist(name, description, public)
 
     if playlist_id is not None:
-        endpoints.add_playlist(tracks, playlist_id, size)
+        status = endpoints.add_playlist(tracks, playlist_id, size)
 
     return redirect(url_for('playlist'))
     
