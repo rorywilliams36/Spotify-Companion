@@ -98,6 +98,7 @@ def create_playlist():
     name = str(request.form["playlist_name"])
     tracks = user_data['tracks'][time_range]
 
+    endpoints.add_playlist(tracks, '1', size)
     playlist_id = endpoints.create_playlist(name)
 
     if playlist_id is not None:
@@ -137,7 +138,7 @@ def access_token(code):
     }
 
     # post request for access token
-    res = post(url, headers=header, json=data, timeout=10)
+    res = post(url, headers=header, data=data, timeout=10)
     token = json.loads(res.content)
     return token
 
@@ -159,7 +160,7 @@ def refresh_token():
     }
 
     # Post request and save token
-    res = post(url, headers=headers, json=data, timeout=10)
+    res = post(url, headers=headers, data=data, timeout=10)
     json_result = json.loads(res.content)
     token = json_result["access_token"]
     session['token_info'] = token
