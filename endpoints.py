@@ -109,6 +109,15 @@ def store_api_data():
     return user_data
 
 def create_playlist(name):
+    '''
+    Creates spotify playlist using post request
+
+    Params:
+        name: string user's inputted name of playlist
+
+    Returns:
+        playlist_id: spotify_id of the newly created playlist (string)
+    '''
     url = 'https://api.spotify.com/v1/me/playlists'
     token = get_access_token()
 
@@ -124,7 +133,7 @@ def create_playlist(name):
         "collaborative" : False
     }
 
-    res = post(url, headers=header, json=data)
+    res = post(url, headers=header, json=data, timeout=10)
     if res.status_code == 201:
         playlist = json.loads(res.content)
         playlist_id = playlist['id']
@@ -132,9 +141,19 @@ def create_playlist(name):
     return None
 
 def add_playlist(tracks, playlist_id, size):
+    '''
+    Adds songs to a requested playlist using the track ids
+
+    params:
+        tracks: array of spotify track objects to be added to the playlist
+        playlist_id: spotify id of the chosen playlist (string)
+        size: integer (0-50) showing number of tracks to be added to the playlist
+
+    Return:
+        status code of post request (200/201 == success)
+    '''
     url = f'https://api.spotify.com/v1/playlists/{playlist_id}/items'
     token = get_access_token()
-    auth_header = get_auth_header(token)
     track_uris = []
 
     for track in tracks[:size]:
@@ -149,13 +168,8 @@ def add_playlist(tracks, playlist_id, size):
         'uris' : track_uris
     }
     
-    res = post(url, headers=header, json=data)
-    json_res = json.loads(res.content)
-    if res.status_code == 201:
-        print('success')
-        return
-    print('error')
-    return
+    res = post(url, headers=header, json=data, timeout=30)
+    return res.status_code
 
 # Returns the top tracks in a dictionary to display easier
 def extract_top_tracks(tracks):
