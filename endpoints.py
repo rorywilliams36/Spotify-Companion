@@ -1,6 +1,10 @@
 import json
+import time
+
 from requests import get, post
 from flask import session
+
+import token_
 
 class SpotifyClient():
 
@@ -8,6 +12,10 @@ class SpotifyClient():
         ''' Gets token from session cookie '''
         if 'token_info' not in session:
             return None
+
+        if time.time() > session['token_info']['expires_in']:
+            session['token_info'] = token_.refresh_token()
+
         return session['token_info']['access_token']
 
     def get_profile(self):

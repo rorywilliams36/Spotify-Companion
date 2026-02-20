@@ -1,6 +1,7 @@
 import os
 import base64
 import json
+import time
 
 from dotenv import load_dotenv
 from requests import post
@@ -36,28 +37,26 @@ def access_token(code):
 def refresh_token():
     ''' Refreshes token after time expiry '''
 
-    token = session['token_info']
+    refresh_token = session['token_info']['refresh_token']
 
     # Format Request
     url = 'https://accounts.spotify.com/api/token' 
 
     data = {
-        'grant-type' : 'refresh_token',
-        'refresh-token' : token
+        'grant_type' : 'refresh_token',
+        'refresh_token' : refresh_token
     }
 
     # Post request and save token
     res = place_post_request(url, data)
 
-    json_result = json.loads(res.content)
-    token = json_result["access_token"]
+    token = json.loads(res.content)
+
+    # increment expiry time
+    token['expires_in'] += time.time()
     session['token_info'] = token
 
-    # Reinstate cache
-    cache.clear()
-    main.fetch_api_data()
-
-    return json_result
+    return token
 
 def get_access_token():
     '''Acquires the access token from the session and calls refresh in case of expiry'''
