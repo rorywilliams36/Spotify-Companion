@@ -1,6 +1,6 @@
-import os
 import base64
 import json
+import os
 import time
 
 from dotenv import load_dotenv
@@ -34,7 +34,7 @@ def access_token(code):
     token = json.loads(res.content)
     return token
 
-def refresh_token():
+def get_refresh_token():
     ''' Refreshes token after time expiry '''
 
     refresh_token = session['token_info']['refresh_token']
@@ -54,19 +54,9 @@ def refresh_token():
 
     # increment expiry time
     token['expires_in'] += time.time()
+    # store token in session cookie
     session['token_info'] = token
 
-    return token
-
-def get_access_token():
-    '''Acquires the access token from the session and calls refresh in case of expiry'''
-    if not session['token_info']:
-        return redirect(url_for('login'))
-    token_json = session["token_info"]
-    token = token_json['access_token']
-    expiry = token_json['expires_in']
-    if expiry < 120:
-        token = refresh_token()
     return token
 
 def encode_client_creds():

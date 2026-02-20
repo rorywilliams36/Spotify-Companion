@@ -14,7 +14,7 @@ class SpotifyClient():
             return None
 
         if time.time() > session['token_info']['expires_in']:
-            session['token_info'] = token_.refresh_token()
+            session['token_info'] = token_.get_refresh_token()
 
         return session['token_info']['access_token']
 
