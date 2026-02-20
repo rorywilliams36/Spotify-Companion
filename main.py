@@ -37,9 +37,6 @@ def callback_page():
     # Creates access token
     token = token_.access_token(code)
 
-    # Sets token variable in spotify class to be used with endpoints
-    spotify.token = token
-
     # Store token in session cookie
     session['token_info'] = token
 
@@ -107,12 +104,11 @@ def error():
     pass
 
 # Stores all relevant User API data in the cache
-@cache.cached(key_prefix='user_')
+@cache.cached(key_prefix='user_', timeout=3600)
 def fetch_api_data():
-    user_data = spotify.store_api_data()
-    return user_data
+    return spotify.store_api_data()
 
-
+        
 
 if __name__ == "__main__":
     app.run(debug=True)
