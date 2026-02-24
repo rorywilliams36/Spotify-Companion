@@ -3,9 +3,8 @@ import secrets
 from flask import Flask, url_for, session, redirect, request, render_template
 from flask_caching import Cache
 
-# imports class for api calls
-from endpoints import spotify 
-import token_
+from endpoints import spotify   # imports class for api calls
+import token_   # Code to create and refresh the access token
 
 # Setup app and cache configs
 config = { "DEBUG": True,
@@ -23,12 +22,14 @@ cache = Cache(app)
 @app.route('/')
 # login to user profile
 def login():
+    ''' Login and oauth for user'''
     # Sends Ouath object to spotify for login
     login_url = token_.get_oauth().get_authorize_url()
     return redirect(login_url)
 
 @app.route('/callback')
 def callback_page():
+    ''' Callback to creat token and fill cache '''
     session.clear()
     # Get result from login
     code = request.args.get('code')
@@ -47,6 +48,7 @@ def callback_page():
 
 @app.route('/dashboard')
 def dashboard():
+    ''' Profile Dashboard Page'''
     # Check session key and cache exists
     if session.get('token_info') and cache.get('user_'):
         # Get relevant data from cache for profile/dashboard page
@@ -59,6 +61,7 @@ def dashboard():
 
 @app.route('/stats/<item_type>/<time_range>') 
 def stats(item_type, time_range):
+    '''  Page to display user listening stats'''
     if session.get('token_info') and cache.get('user_'):
         user_data = cache.get('user_')
         # sets default options if none are selected
@@ -75,12 +78,14 @@ def stats(item_type, time_range):
 
 @app.route('/playlist')
 def playlist():
+    ''' Playlist Form '''
     if session.get('token_info') and cache.get('user_'):
         return render_template('playlist.html')
     return redirect(url_for('login'))
 
 @app.route('/create-playlist', methods=['POST'])
 def create_playlist():
+    ''' Creates playlist using info from form'''
     user_data = cache.get('user_')
 
     time_range = request.form["time_range"]
@@ -103,12 +108,11 @@ def create_playlist():
 def error():
     pass
 
-# Stores all relevant User API data in the cache
 @cache.cached(key_prefix='user_', timeout=3600)
 def fetch_api_data():
+    ''' Stores all relevant User API data in the cache '''
     return spotify.store_api_data()
 
-        
 
 if __name__ == "__main__":
     app.run(debug=True)

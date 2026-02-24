@@ -7,6 +7,7 @@ from flask import session
 import token_
 
 class SpotifyClient():
+    ''' Class used for spotify api calls to get user data'''
 
     def get_token(self):
         ''' Gets token from session cookie '''
