@@ -1,6 +1,6 @@
 # Spotify Companion/Analytics
 
-Application using Python Flask to view and create playlists based on your spotify listening stats by using [Spotify's API]{https://developer.spotify.com/documentation/web-api}
+Application using Python Flask to view and create playlists based on your spotify listening stats by using [Spotify's API](https://developer.spotify.com/documentation/web-api)
 
 ## To Run
 1. First go to [Spotify Dashboard](https://developer.spotify.com/dashboard) and login into your account
