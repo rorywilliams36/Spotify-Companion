@@ -168,6 +168,17 @@ form {
     max-width: 20%;
 }
 
+.alert-success {
+    background: #1db954;
+    color: white;
+    border: none;
+}
+
+.alert-danger {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+}
 
 /* ------------ */
 footer {

@@ -1,6 +1,6 @@
 import secrets
 
-from flask import Flask, url_for, session, redirect, request, render_template
+from flask import Flask, url_for, session, redirect, request, render_template, flash
 from flask_caching import Cache
 
 from endpoints import spotify   # imports class for api calls
@@ -20,7 +20,6 @@ app.secret_key = secrets.token_hex()
 cache = Cache(app)
 
 @app.route('/')
-# login to user profile
 def login():
     ''' Login and oauth for user'''
     # Sends Ouath object to spotify for login
@@ -57,6 +56,8 @@ def dashboard():
         tracks = user_data['tracks']['long_term'][:10]
         artists = user_data['artists']['long_term'][:10]
         return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
+    else:
+        flash('Error logging in')
     return redirect(url_for('login'))
 
 @app.route('/stats/<item_type>/<time_range>') 
@@ -74,6 +75,8 @@ def stats(item_type, time_range):
         # Gets items and loads page
         items = user_data[item_type][time_range]
         return render_template('stats.html', items=items, item_type=item_type, time_range=time_range)
+    else:
+        flash('Error loading data')
     return redirect(url_for('login'))
 
 @app.route('/playlist')
@@ -100,14 +103,13 @@ def create_playlist():
 
     if playlist_id is not None:
         status = spotify.add_playlist(tracks, playlist_id, size)
+        flash(f'Playlist Successfully Created!')
+    else:
+        flash(f'Error Creating Playlist')
+
 
     return redirect(url_for('playlist'))
     
-
-@app.route('/error')
-def error():
-    pass
-
 @cache.cached(key_prefix='user_', timeout=3600)
 def fetch_api_data():
     ''' Stores all relevant User API data in the cache '''
