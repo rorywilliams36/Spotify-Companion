@@ -25,19 +25,17 @@ def check_auth():
     Checks if access token exists and cache contains user data before
     any requests are executed
     '''
-    
-    public_routes = ["login","callback", "static"]
+
     protected_routes = ["dashboard", "stats", "playlist", "create_playlist"]
 
     if request.endpoint in protected_routes:
-        token = session.get('token_info') 
+        token = session.get('token_info')
         if not token:
             return redirect(url_for('login'))
 
-            if not cache.get('user_'):
-                fetch_api_data()
-                return redirect(url_for('dashboard'))
-    return    
+        if not cache.get('user_'):
+            fetch_api_data()
+            return redirect(url_for('dashboard'))    
 
 @app.route('/')
 def login():
