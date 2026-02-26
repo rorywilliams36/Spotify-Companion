@@ -82,7 +82,7 @@ def place_post_request(url, data):
     '''
     Sends Post Requests
 
-    Params:
+    Args:
         url: String of the api endpoint
         data: Data (dict/json) sent to endpoint
 

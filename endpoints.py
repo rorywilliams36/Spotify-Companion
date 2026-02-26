@@ -32,7 +32,7 @@ class SpotifyClient():
         '''
         Returns the top tracks or artists the user listens to
 
-        Params:
+        Args:
             item_type: string, either 'tracks' or 'artists'
             limit: integer of the number items to be returned
             time_range: string displaying how far bakc to grab data from ('short_term', 'medium_term', 'long_term')
@@ -56,7 +56,7 @@ class SpotifyClient():
         '''
         Returns the current users' saved playlists
 
-        Params:
+        Args:
             limit: integer of the number items to be returned
             offset: int
 
@@ -77,7 +77,7 @@ class SpotifyClient():
         '''
         Returns the current users' saved/liked songs
 
-        Params:
+        Args:
             limit: integer of the number items to be returned
             offset: int
 
@@ -127,7 +127,7 @@ class SpotifyClient():
         '''
         Creates spotify playlist using post request
 
-        Params:
+        Args:
             name: string user's inputted name of playlist
             description: string user's description of playlist
             public: boolean stating if playlist is public or private
@@ -156,7 +156,7 @@ class SpotifyClient():
         '''
         Adds songs to a requested playlist using the track ids
 
-        params:
+        Args:
             tracks: array of spotify track objects to be added to the playlist
             playlist_id: spotify id of the chosen playlist (string)
             size: integer (0-50) showing number of tracks to be added to the playlist
@@ -181,7 +181,7 @@ class SpotifyClient():
         '''
         Sends Post Requests
 
-        Params:
+        Args:
             url: String of the api endpoint
             data: Data (dict/json) sent to endpoint
 
@@ -200,7 +200,7 @@ class SpotifyClient():
         '''
         Sends Get Requests
 
-        Params:
+        Args:
             url: String of the api endpoint
 
         Return:
