@@ -19,6 +19,21 @@ app.config.from_mapping(config)
 app.secret_key = secrets.token_hex() 
 cache = Cache(app)
 
+@app.before_request
+def check_auth():
+    public_routes = ["login","callback", "static"]
+    protected_routes = ["dashboard", "stats", "playlist", "create_playlist"]
+
+    if request.endpoint in protected_routes:
+        token = session.get('token_info') 
+        if not token:
+            return redirect(url_for('login'))
+
+            if not cache.get('user_'):
+                fetch_api_data()
+                return redirect(url_for('dashboard'))
+    return    
+
 @app.route('/')
 def login():
     ''' Login and oauth for user'''
@@ -49,21 +64,18 @@ def callback_page():
 def dashboard():
     ''' Profile Dashboard Page'''
     # Check session key and cache exists
-    if session.get('token_info') and cache.get('user_'):
-        # Get relevant data from cache for profile/dashboard page
-        user_data = cache.get('user_')
-        profile = user_data['profile']
-        tracks = user_data['tracks']['long_term'][:10]
-        artists = user_data['artists']['long_term'][:10]
-        return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
-    else:
-        flash('Error logging in')
-    return redirect(url_for('login'))
+    # Get relevant data from cache for profile/dashboard page
+    user_data = cache.get('user_')
+    profile = user_data['profile']
+    tracks = user_data['tracks']['long_term'][:10]
+    artists = user_data['artists']['long_term'][:10]
+    return render_template('dashboard.html', profile=profile, artists=artists, tracks=tracks)
+
 
 @app.route('/stats/<item_type>/<time_range>') 
 def stats(item_type, time_range):
     '''  Page to display user listening stats'''
-    if session.get('token_info') and cache.get('user_'):
+    try:
         user_data = cache.get('user_')
         # sets default options if none are selected
         if item_type not in ("tracks", "artists"):
@@ -75,16 +87,16 @@ def stats(item_type, time_range):
         # Gets items and loads page
         items = user_data[item_type][time_range]
         return render_template('stats.html', items=items, item_type=item_type, time_range=time_range)
-    else:
+
+    except Exception:
         flash('Error loading data')
+    
     return redirect(url_for('login'))
 
 @app.route('/playlist')
 def playlist():
     ''' Playlist Form '''
-    if session.get('token_info') and cache.get('user_'):
-        return render_template('playlist.html')
-    return redirect(url_for('login'))
+    return render_template('playlist.html')
 
 @app.route('/create-playlist', methods=['POST'])
 def create_playlist():
@@ -99,14 +111,12 @@ def create_playlist():
 
     tracks = user_data['tracks'][time_range]
 
-    playlist_id = spotify.create_playlist(name, description, public)
-
-    if playlist_id is not None:
+    try:
+        playlist_id = spotify.create_playlist(name, description, public)
         status = spotify.add_playlist(tracks, playlist_id, size)
-        flash(f'Playlist Successfully Created!')
-    else:
-        flash(f'Error Creating Playlist')
-
+        flash('Playlist Successfully Created!')
+    except Exception:
+        flash('Error Creating Playlist')
 
     return redirect(url_for('playlist'))
     
