@@ -21,6 +21,11 @@ cache = Cache(app)
 
 @app.before_request
 def check_auth():
+    ''' 
+    Checks if access token exists and cache contains user data before
+    any requests are executed
+    '''
+    
     public_routes = ["login","callback", "static"]
     protected_routes = ["dashboard", "stats", "playlist", "create_playlist"]
 
