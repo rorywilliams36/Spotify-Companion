@@ -11,7 +11,7 @@ config = { "DEBUG": True,
     "CACHE_TYPE": "SimpleCache",
     "CACHE_DEFAULT_TIMEOUT": 3600,
     "SESSION_COOKIE_NAME": "Spotify Cookie"
-} 
+}
 
 # Init app and cache
 app = Flask(__name__)
@@ -115,6 +115,7 @@ def create_playlist():
         playlist_id = spotify.create_playlist(name, description, public)
         status = spotify.add_playlist(tracks, playlist_id, size)
         flash('Playlist Successfully Created!')
+
     except Exception:
         flash('Error Creating Playlist')
 

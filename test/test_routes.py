@@ -21,7 +21,6 @@ def test_playlist_route(client):
     response = client.get("/playlist")
     assert response.status_code == 302
 
-
 def test_create_playlist(client):
     response = client.post("/create-playlist", 
     data = {

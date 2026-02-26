@@ -19,7 +19,7 @@ class SpotifyClient():
 
         return session['token_info']['access_token']
 
-    def get_profile(self):
+    def get_profile(self): 
         ''' returns JSON payload (dict) for the current user's profile '''
         url = "https://api.spotify.com/v1/me"
 
