@@ -53,7 +53,7 @@ def get_refresh_token():
     token = json.loads(res.content)
 
     # increment expiry time
-    token['expires_in'] += time.time()
+    token['expires_in'] = token['expires_in'] + time.time()
     # store token in session cookie
     session['token_info'] = token
 
